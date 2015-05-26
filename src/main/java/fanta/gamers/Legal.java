@@ -32,18 +32,16 @@ public class Legal extends StateMachineGamer {
 	@Override
 	public Move stateMachineSelectMove(long timeout)
 			throws TransitionDefinitionException, MoveDefinitionException,
-			GoalDefinitionException
-	{
+			GoalDefinitionException {
 		long start = System.currentTimeMillis();
 
-
-		List<Move> moves = getStateMachine().getLegalMoves(getCurrentState(), getRole());
+		List<Move> moves = getStateMachine().getLegalMoves(getCurrentState(),
+				getRole());
 		Move selection = moves.get(0);
 
-
-
 		long stop = System.currentTimeMillis();
-		notifyObservers(new GamerSelectedMoveEvent(moves, selection, stop - start));
+		notifyObservers(new GamerSelectedMoveEvent(moves, selection, stop
+				- start));
 		return selection;
 	}
 

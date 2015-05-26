@@ -39,6 +39,7 @@ public final class PlayerRunner
     		return;
     	}
     	Gamer gamer = (Gamer) chosenGamerClass.newInstance();
+    	//Gamer gamer = new fanta.gamers.PuzzleSolver();
 		new GamePlayer(port, gamer).start();
 	}
 }

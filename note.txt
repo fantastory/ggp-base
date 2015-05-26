@@ -1,0 +1,12 @@
+Exercise 7.3 
+
+http://gamemaster.stanford.edu/gamemanager.php?id=tictactoe
+
+http://gamemaster.stanford.edu/gamemanager.php?id=buttonsandlights
+
+http://gamemaster.stanford.edu/gamemanager.php?id=tictactoe&addr=http://127.0.0.1:9147
+
+
+gamemaster.stanford.edu/gamemanager.php?id=hunter&addr=http://127.0.0.1:9147
+
+
