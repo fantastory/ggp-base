@@ -1,5 +1,6 @@
 package fanta.gamers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.ggp.base.player.gamer.event.GamerSelectedMoveEvent;
@@ -19,9 +20,54 @@ import org.ggp.base.util.statemachine.exceptions.MoveDefinitionException;
 import org.ggp.base.util.statemachine.exceptions.TransitionDefinitionException;
 import org.ggp.base.util.statemachine.implementation.prover.ProverStateMachine;
 
-public class MinMax extends StateMachineGamer {
+public class Hunter extends StateMachineGamer {
 
-	public MinMax() {
+	class Pos {
+		int x, y;
+
+		Pos(int ax, int ay) {
+			x = ax;
+			y = ay;
+		}
+	}
+
+	List<String> m_moves = new ArrayList<String>();
+	int m_currentMove = 0;;
+
+	public Hunter() {
+		ArrayList<Pos> p = new ArrayList<Pos>();
+		p.add(new Pos(1,1)); //0
+		p.add(new Pos(2,3)); //1
+		p.add(new Pos(3,1)); //2
+		p.add(new Pos(1,2)); //3
+		p.add(new Pos(3,3)); //4
+		p.add(new Pos(2,1)); //5
+		p.add(new Pos(1,3)); //6
+		p.add(new Pos(3,2)); //7
+		p.add(new Pos(5,1)); //8
+		p.add(new Pos(4,3)); //9
+		p.add(new Pos(2,2)); //10
+		p.add(new Pos(4,1)); //11
+		p.add(new Pos(5,3)); //12
+		p.add(new Pos(4,1)); //13
+		p.add(new Pos(5,3)); //14
+		p.add(new Pos(5,2)); //15
+		p.add(new Pos(3,1)); //16
+		p.add(new Pos(2,3)); //17
+		p.add(new Pos(4,2)); //18
+
+		for (int i = 1; i < p.size(); ++i) {
+			Pos curr = p.get(i-1);
+			Pos next = p.get(i);
+			String strTerm = "( move "+curr.x+" "+curr.y+" "+next.x+" "+next.y+" )";
+
+			m_moves.add(strTerm);
+		}
+
+		for (int i = 1; i < m_moves.size(); ++i) {
+			System.out.println(m_moves.get(i));
+		}
+
 	}
 
 	//http://127.0.0.1:9147
@@ -40,6 +86,7 @@ public class MinMax extends StateMachineGamer {
 		m_highestPossibleScore = 100;
 		m_lowestPossibleScore = 0;
 		m_myroleIndex = -1;
+		m_currentMove = 0;
 
 		try {
 			Game g = getMatch().getGame();
@@ -100,7 +147,7 @@ public class MinMax extends StateMachineGamer {
 	Move bestMove(Role role, MachineState state) throws GoalDefinitionException, MoveDefinitionException, TransitionDefinitionException {
 		//System.out.println("bestMove");
 
-		int limit = 2;
+		int limit = 6;
 
 		StateMachine stateMachine = getStateMachine();
 		List<Move> actions = stateMachine.getLegalMoves(state, role);
@@ -198,9 +245,21 @@ function minscore (role,action,state,alpha,beta)
 		long start = System.currentTimeMillis();
 		m_timelimit = start + timeout - 1000;
 
-		List<Move> moves = getStateMachine().getLegalMoves(getCurrentState(),getRole());
 
-		Move move = bestMove(getRole(), getCurrentState());
+		List<Move> moves = getStateMachine().getLegalMoves(getCurrentState(),getRole());
+		Move move = moves.get(0);
+		String mstr = m_moves.get(m_currentMove++);
+		for (int i = 0; i < moves.size(); i++) {
+			move = moves.get(i);
+			String term = move.toString();
+			System.out.println("check "+mstr+" "+term);
+			if (mstr.equals(term)) {
+				System.out.println("found it "+term);
+				break;
+			}
+		}
+
+		//Move move = bestMove(getRole(), getCurrentState());
 
 		long stop = System.currentTimeMillis();
 		notifyObservers(new GamerSelectedMoveEvent(moves, move, stop - start));

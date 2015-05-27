@@ -119,7 +119,7 @@ public final class GamePlayer extends Thread implements Subject
 
 		try {
 			//Gamer gamer = new RandomGamer();
-			Gamer gamer = new fanta.gamers.MinMax();
+			Gamer gamer = new fanta.gamers.MonteCarlo();
 			GamePlayer player = new GamePlayer(Integer.valueOf(args[0]), gamer);
 			player.run();
 		} catch (NumberFormatException e) {
